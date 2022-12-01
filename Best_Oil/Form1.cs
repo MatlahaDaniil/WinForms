@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,27 +13,61 @@ namespace Best_Oil
 {
     public partial class Form1 : Form
     {
-        List<string> names = new List<string> { "A-76", "A-92", "A-95", "Дизель", "Газ", "A-44", "A-80" };
-        List<double> prices = new List<double> { 10.40, 24.80, 9.00, 11.00, 3.46, 5.65, 7.15 };
-        List<double> prices_for_food = new List<double> { 4.0, 5.40, 7.20, 4.20 };
 
-        int save_last_num = 1;
-        double[] arr_for_sum;
+        List<string> names_for_petrol = new List<string>();
+        List<double> prices_for_petrol = new List<double>();
+
+        List<string> namesProduct = new List<string>();
+        List<double> pricesProduct = new List<double>();
+
+        List<Product> products = new List<Product>();
 
         public Form1()
         {
 
-            InitializeComponent();
-            comboBox1.DataSource = names;
-            textBox3.Text = prices_for_food.ElementAt(0).ToString();
-            textBox6.Text = prices_for_food.ElementAt(1).ToString();
-            textBox8.Text = prices_for_food.ElementAt(2).ToString();
-            textBox10.Text = prices_for_food.ElementAt(3).ToString();
-            arr_for_sum = new double[prices_for_food.Count];
-            for (int i = 0; i < arr_for_sum.Length; i++)
+            InitializeComponent();       
+            load();
+
+
+            comboBox1.DataSource = names_for_petrol;
+
+
+            for (int i = 0; i < namesProduct.Count; i++)
             {
-                arr_for_sum[i] = 0;
+                CheckBox checkBox = new CheckBox();
+                checkBox.Location = new Point(3, 12 + i * 28);
+                checkBox.Text = namesProduct[i];
+                checkBox.CheckedChanged += CheckBox_CheckedChanged;
+
+                TextBox textBoxPrice = new TextBox();
+                textBoxPrice.Location = new Point(115, 12 + i * 28);
+                textBoxPrice.Size = new Size(65, 22);
+                textBoxPrice.Text = pricesProduct[i].ToString();
+                textBoxPrice.ReadOnly = true;
+
+                NumericUpDown numericUpDownAmount = new NumericUpDown();
+                numericUpDownAmount.Location = new Point(200, 12 + i * 28);
+                numericUpDownAmount.Size = new Size(70, 16);
+                numericUpDownAmount.Minimum = 0;
+                numericUpDownAmount.Maximum = 1000;
+                numericUpDownAmount.Enabled = false;
+                numericUpDownAmount.ValueChanged += NumericUpDownAmount_ValueChanged;
+
+                products.Add(new Product
+                {
+                    Name = namesProduct[i],
+                    Price = (decimal)pricesProduct[i],
+                    CheckBox_Enable = checkBox,
+                    TextBox_Price = textBoxPrice,
+                    Amount = numericUpDownAmount
+                });
+
+                panel1.Controls.Add(numericUpDownAmount);
+                panel1.Controls.Add(checkBox);
+                panel1.Controls.Add(textBoxPrice);
+
             }
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -43,14 +78,14 @@ namespace Best_Oil
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             textBox11.Clear();
-            textBox11.Text = prices[comboBox1.SelectedIndex].ToString();
+            textBox11.Text = prices_for_petrol[comboBox1.SelectedIndex].ToString();
         }
 
         private void radioButton1_CheckedChanged(object sender, EventArgs e)
         {
             textBox2.Clear();
             textBox2.ReadOnly = true;
-            textBox1.ReadOnly = false;  
+            textBox1.ReadOnly = false;
             groupBox5.Text = "До оплати";
             label3.Text = "Грн";
 
@@ -92,161 +127,9 @@ namespace Best_Oil
             }
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBox1.Checked)
-            {
-                textBox4.Clear();
-                textBox4.ReadOnly = false;
-            }
-            else
-            {
-                double temp = double.Parse(textBox4.Text);
-                save_last_num = 0;
-                arr_for_sum[0] -= (temp * double.Parse(textBox3.Text));
-                textBox4.Text = "0";
-                textBox4.ReadOnly = true;
-                ShowFoodCost();
-            }
-        }
-
-        private void textBox4_TextChanged(object sender, EventArgs e)
-        {
-            if (textBox4.Text != "")
-            {
-                save_last_num = 0;
-                int amount = int.Parse(textBox4.Text);
-                double money = amount * double.Parse(textBox3.Text);
-                save_last_num = amount;
-                arr_for_sum[0] = money;
-                ShowFoodCost();
-            }
-            else if (textBox4.Text == "")
-            {
-                arr_for_sum[0] = (double.Parse(label7.Text) - double.Parse(textBox3.Text)) * save_last_num;
-                ShowFoodCost();
-            }
-        }
-
-
-
-        private void textBox5_TextChanged(object sender, EventArgs e)
-        {
-            if (textBox5.Text != "")
-            {
-                save_last_num = 0;
-                int amount = int.Parse(textBox5.Text);
-                double money = amount * double.Parse(textBox6.Text);
-                save_last_num = amount;
-                arr_for_sum[1] = money;
-                ShowFoodCost();
-            }
-            else if(textBox5.Text == "")
-            {
-                arr_for_sum[1] = (double.Parse(label7.Text) - double.Parse(textBox6.Text)) * save_last_num;
-                ShowFoodCost();
-            }
-        }
-
-        private void checkBox2_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBox2.Checked)
-            {
-                textBox5.Clear();
-                textBox5.ReadOnly = false;
-            }
-            else
-            {
-                double temp = double.Parse(textBox5.Text);
-                save_last_num = 0;
-                arr_for_sum[1] -= (temp * double.Parse(textBox6.Text));
-                textBox5.Text = "0";
-                textBox5.ReadOnly = true;
-                ShowFoodCost();
-            }
-        }
-
-
-
-
-        private void checkBox3_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBox3.Checked)
-            {
-                textBox7.Clear();
-                textBox7.ReadOnly = false;
-            }
-            else
-            {
-                double temp = double.Parse(textBox7.Text);
-                save_last_num = 0;
-                arr_for_sum[2] -= (temp * double.Parse(textBox8.Text));
-                textBox7.Text = "0";
-                textBox7.ReadOnly = true;
-                ShowFoodCost();
-            }
-        }
-        private void textBox7_TextChanged(object sender, EventArgs e)
-        {
-            if (textBox7.Text != "")
-            {
-                save_last_num = 0;
-                int amount = int.Parse(textBox7.Text);
-                double money = amount * double.Parse(textBox8.Text);
-                save_last_num = amount;
-                arr_for_sum[2] = money;
-                ShowFoodCost();
-            }
-            else if (textBox5.Text == "")
-            {
-                arr_for_sum[2] = (double.Parse(label7.Text) - double.Parse(textBox8.Text)) * save_last_num;
-                ShowFoodCost();
-            }
-        }  
-            
-        
-
-        private void checkBox4_CheckedChanged(object sender, EventArgs e)
-        {
-            if (checkBox4.Checked)
-            {
-                textBox9.Clear();
-                textBox9.ReadOnly = false;
-            }
-            else
-            {
-                double temp = double.Parse(textBox9.Text);
-                save_last_num = 0;
-                arr_for_sum[3] -= (temp * double.Parse(textBox10.Text));
-                textBox9.Text = "0";
-                textBox9.ReadOnly = true;
-                ShowFoodCost();
-            }
-        }
-
-        private void textBox9_TextChanged(object sender, EventArgs e)
-        {
-            if (textBox9.Text != "")
-            {
-                save_last_num = 0;
-                int amount = int.Parse(textBox9.Text);
-                double money = amount * double.Parse(textBox10.Text);
-                save_last_num = amount;
-                arr_for_sum[3] = money;
-                ShowFoodCost();
-            }
-            else if (textBox5.Text == "")
-            {
-                arr_for_sum[3] = (double.Parse(label9.Text) - double.Parse(textBox10.Text)) * save_last_num;
-                ShowFoodCost();
-            }
-        }
-
-
-
         private void button1_Click(object sender, EventArgs e)
         {
-            if (groupBox5.Text == "До оплати") 
+            if (groupBox5.Text == "До оплати")
             {
                 label9.Text = Convert.ToString(double.Parse(label4.Text) + double.Parse(label7.Text));
             }
@@ -254,22 +137,104 @@ namespace Best_Oil
             {
                 label9.Text = Convert.ToString(double.Parse(textBox2.Text) + double.Parse(label7.Text));
             }
-        } 
-        
-        void ShowFoodCost()
+        }
+
+        //////////////////////////////////////////////
+
+        private void panel1_Paint(object sender, PaintEventArgs e)
         {
-            label7.Text = "";
-            double sum = 0;
-            for (int i = 0; i < arr_for_sum.Length; i++)
+
+        }
+
+        private void textBox11_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void CheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            CheckBox check = sender as CheckBox;
+            for (int i = 0; i < products.Count; i++)
             {
-                sum += arr_for_sum[i];
+                if (products[i].CheckBox_Enable == check)
+                {
+                    products[i].Amount.Enabled = check.Checked;
+                    NumericUpDownAmount_ValueChanged(sender, e);
+                    break;
+                }
             }
-            label7.Text = sum.ToString();
         }
 
-        private void groupBox3_Enter(object sender, EventArgs e)
+        private void NumericUpDownAmount_ValueChanged(object sender, EventArgs e)
         {
+            decimal SumAll = 0;
+            for (int i = 0; i < products.Count; i++)
+            {
+                if (products[i].CheckBox_Enable.Checked == true)
+                {
+                    SumAll += products[i].Price * products[i].Amount.Value;
+                }
+            }
+            label7.Text = String.Format("{0:0.00}", SumAll);
+        }
+
+        void load()
+        {
+            using (FileStream fs = new FileStream("load\\product_for_petrol.txt", FileMode.Open, FileAccess.Read))
+            {
+                using (StreamReader sr = new StreamReader(fs))
+                {
+                    while (!sr.EndOfStream)
+                    {
+                        for (int i = 0; i < 2; i++)
+                        {
+                            if(i % 2 == 0)
+                            {
+                                names_for_petrol.Add(sr.ReadLine());
+                            }
+                            else
+                            {
+                                prices_for_petrol.Add(double.Parse(sr.ReadLine()));
+                            }
+                        }
+                    }
+                }
+            }
+
+            using (FileStream fs = new FileStream("load\\product_for_cafe.txt", FileMode.Open, FileAccess.Read))
+            {
+                using (StreamReader sr = new StreamReader(fs))
+                {
+                    while (!sr.EndOfStream)
+                    {
+                        for (int i = 0; i < 2; i++)
+                        {
+                            if (i % 2 == 0)
+                            {
+                               namesProduct.Add(sr.ReadLine());
+                            }
+                            else
+                            {
+                                pricesProduct.Add(double.Parse(sr.ReadLine()));
+                            }
+                        }
+                    }
+                }
+            }
 
         }
+
+    }
+    
+
+    
+
+    class Product
+    {
+        public string Name { get; set; }
+        public decimal Price { get; set; }
+        public CheckBox CheckBox_Enable { get; set; }
+        public TextBox TextBox_Price { get; set; }
+        public NumericUpDown Amount { get; set; }
     }
 }
