@@ -30,14 +30,14 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            System.Windows.Forms.ListViewItem listViewItem9 = new System.Windows.Forms.ListViewItem("1f", 0);
-            System.Windows.Forms.ListViewItem listViewItem10 = new System.Windows.Forms.ListViewItem("2f", 1);
-            System.Windows.Forms.ListViewItem listViewItem11 = new System.Windows.Forms.ListViewItem("5f", 2);
-            System.Windows.Forms.ListViewItem listViewItem12 = new System.Windows.Forms.ListViewItem("5p", 3);
-            System.Windows.Forms.ListViewItem listViewItem13 = new System.Windows.Forms.ListViewItem("10f", 4);
-            System.Windows.Forms.ListViewItem listViewItem14 = new System.Windows.Forms.ListViewItem("10p", 5);
-            System.Windows.Forms.ListViewItem listViewItem15 = new System.Windows.Forms.ListViewItem("20p", 6);
-            System.Windows.Forms.ListViewItem listViewItem16 = new System.Windows.Forms.ListViewItem("50p", 7);
+            System.Windows.Forms.ListViewItem listViewItem1 = new System.Windows.Forms.ListViewItem("1f", 0);
+            System.Windows.Forms.ListViewItem listViewItem2 = new System.Windows.Forms.ListViewItem("2f", 1);
+            System.Windows.Forms.ListViewItem listViewItem3 = new System.Windows.Forms.ListViewItem("5f", 2);
+            System.Windows.Forms.ListViewItem listViewItem4 = new System.Windows.Forms.ListViewItem("5p", 3);
+            System.Windows.Forms.ListViewItem listViewItem5 = new System.Windows.Forms.ListViewItem("10f", 4);
+            System.Windows.Forms.ListViewItem listViewItem6 = new System.Windows.Forms.ListViewItem("10p", 5);
+            System.Windows.Forms.ListViewItem listViewItem7 = new System.Windows.Forms.ListViewItem("20p", 6);
+            System.Windows.Forms.ListViewItem listViewItem8 = new System.Windows.Forms.ListViewItem("50p", 7);
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.list_with_money = new System.Windows.Forms.ListView();
             this.GetMoneyList = new System.Windows.Forms.ListView();
@@ -61,23 +61,23 @@
             // list_with_money
             // 
             this.list_with_money.HideSelection = false;
-            listViewItem9.Tag = "1";
-            listViewItem10.Tag = "2";
-            listViewItem11.Tag = "5";
-            listViewItem12.Tag = "0.05";
-            listViewItem13.Tag = "10";
-            listViewItem14.Tag = "0.10";
-            listViewItem15.Tag = "0.2";
-            listViewItem16.Tag = "0.5";
+            listViewItem1.Tag = "1";
+            listViewItem2.Tag = "2";
+            listViewItem3.Tag = "5";
+            listViewItem4.Tag = "0.05";
+            listViewItem5.Tag = "10";
+            listViewItem6.Tag = "0.10";
+            listViewItem7.Tag = "0.2";
+            listViewItem8.Tag = "0.5";
             this.list_with_money.Items.AddRange(new System.Windows.Forms.ListViewItem[] {
-            listViewItem9,
-            listViewItem10,
-            listViewItem11,
-            listViewItem12,
-            listViewItem13,
-            listViewItem14,
-            listViewItem15,
-            listViewItem16});
+            listViewItem1,
+            listViewItem2,
+            listViewItem3,
+            listViewItem4,
+            listViewItem5,
+            listViewItem6,
+            listViewItem7,
+            listViewItem8});
             this.list_with_money.LargeImageList = this.imageList1;
             this.list_with_money.Location = new System.Drawing.Point(12, 78);
             this.list_with_money.Name = "list_with_money";
@@ -96,6 +96,7 @@
             this.GetMoneyList.Size = new System.Drawing.Size(410, 360);
             this.GetMoneyList.TabIndex = 1;
             this.GetMoneyList.UseCompatibleStateImageBehavior = false;
+            this.GetMoneyList.SelectedIndexChanged += new System.EventHandler(this.GetMoneyList_SelectedIndexChanged);
             this.GetMoneyList.DragDrop += new System.Windows.Forms.DragEventHandler(this.GetMoneyList_DragDrop);
             this.GetMoneyList.DragEnter += new System.Windows.Forms.DragEventHandler(this.GetMoneyList_DragEnter);
             // 

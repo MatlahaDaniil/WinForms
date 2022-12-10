@@ -14,7 +14,7 @@ namespace DragAndDrop
     public partial class Form1 : Form
     {
         int p = 0, f = 0;
-        char type_of_money;
+        
 
         public Form1()
         {
@@ -63,6 +63,11 @@ namespace DragAndDrop
             print_Money_lbl.Text = "0f 0p";
             p = 0;
             f = 0;
+        }
+
+        private void GetMoneyList_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
 
         void result_money(char type , int money)
